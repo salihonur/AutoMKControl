@@ -1,0 +1,5 @@
+Language = Turkce
+OK = Tamam
+Cancel = Iptal
+Start = Baslat
+Stop = Durdur
