@@ -20,6 +20,8 @@ namespace AutoClickerTyper
 
         int curDGVRow = 0;
 
+        bool isRunning = false;
+
         [Flags]
         public enum MouseEventFlags
         {
@@ -96,6 +98,8 @@ namespace AutoClickerTyper
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            isRunning = false;
+
             // LANGUAGE FILE LOAD ====>
             DirectoryInfo d = new System.IO.DirectoryInfo(Directory.GetCurrentDirectory()+"\\lang");//Assuming Test is your Folder
             /*FileInfo[] Files = d.GetFiles("*.txt"); //Getting Text files
@@ -190,8 +194,8 @@ namespace AutoClickerTyper
 
             if(e.KeyCode == Keys.Escape)
             {
+                isRunning = false;
 
-                    
             }
         }
 
@@ -236,6 +240,7 @@ namespace AutoClickerTyper
                     if(MessageBox.Show("Liste çalıştırılacak, onaylıyor musunuz?", "ONAY GEREKLİ!", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
 
+                isRunning = true;
                 curDGVRow = 0;
                 tmrProgram.Interval = Int32.Parse(dgvProgram.Rows[curDGVRow].Cells["Bekle"].Value.ToString());
                 tmrProgram.Enabled = true;
@@ -247,7 +252,7 @@ namespace AutoClickerTyper
         {
             tmrProgram.Enabled = false;
 
-            if (curDGVRow < dgvProgram.RowCount)
+            if (isRunning && curDGVRow < dgvProgram.RowCount)
             {
                 string cmd = dgvProgram.Rows[curDGVRow].Cells["İşlem"].Value.ToString();
                 int x = Int32.Parse(dgvProgram.Rows[curDGVRow].Cells["X"].Value.ToString());
@@ -314,7 +319,8 @@ namespace AutoClickerTyper
 
         private void btStop_Click(object sender, EventArgs e)
         {
-
+            isRunning = false;
+            tmrProgram.Enabled = false;
         }
 
         private void btImport_Click(object sender, EventArgs e)
